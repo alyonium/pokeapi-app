@@ -1,0 +1,1 @@
+{"root":["./src/app.tsx","./src/main.tsx","./src/vite-env.d.ts","./src/api/__generated__/graphql.ts","./src/api/queries/pokemonpage.ts","./src/api/queries/pokemontable.ts","./src/components/basetable/basetable.tsx","./src/modules/card/cardpage.tsx","./src/modules/catalog/catalogpage.tsx","./src/router/approuter.tsx","./src/utils/consts.ts"],"errors":true,"version":"5.6.3"}

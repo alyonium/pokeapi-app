@@ -2,6 +2,7 @@ import CardPage from '../modules/card/CardPage.tsx';
 import CatalogPage from '../modules/catalog/CatalogPage.tsx';
 import { Route } from 'react-router-dom';
 import { Routes } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
 const AppRouter = () => {
   return (
