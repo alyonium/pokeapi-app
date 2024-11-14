@@ -58791,16 +58791,29 @@ export type GetPokemonByIdQuery = {
         id: number,
         height?: number | null,
         name: string,
-        order?: number | null
+        weight?: number | null,
+        order?: number | null,
+        base_experience?: number | null
     }>
 };
 
-export type GetPokemonsQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetPokemonsQueryVariables = Exact<{
+    limit: Scalars['Int']['input'];
+    offset: Scalars['Int']['input'];
+}>;
 
 
 export type GetPokemonsQuery = {
     __typename?: 'query_root',
-    pokemon_v2_pokemon: Array<{ __typename?: 'pokemon_v2_pokemon', id: number, height?: number | null, name: string }>,
+    pokemon_v2_pokemon: Array<{
+        __typename?: 'pokemon_v2_pokemon',
+        id: number,
+        height?: number | null,
+        name: string,
+        weight?: number | null,
+        order?: number | null,
+        base_experience?: number | null
+    }>,
     pokemon_v2_pokemon_aggregate: {
         __typename?: 'pokemon_v2_pokemon_aggregate',
         aggregate?: { __typename?: 'pokemon_v2_pokemon_aggregate_fields', count: number } | null
@@ -58814,7 +58827,9 @@ export const GetPokemonByIdDocument = gql`
     id
     height
     name
+    weight
     order
+    base_experience
   }
 }
     `;
@@ -58858,11 +58873,14 @@ export type GetPokemonByIdLazyQueryHookResult = ReturnType<typeof useGetPokemonB
 export type GetPokemonByIdSuspenseQueryHookResult = ReturnType<typeof useGetPokemonByIdSuspenseQuery>;
 export type GetPokemonByIdQueryResult = Apollo.QueryResult<GetPokemonByIdQuery, GetPokemonByIdQueryVariables>;
 export const GetPokemonsDocument = gql`
-    query GetPokemons {
-  pokemon_v2_pokemon(limit: 10, offset: 10, order_by: {id: asc}) {
+    query GetPokemons($limit: Int!, $offset: Int!) {
+  pokemon_v2_pokemon(limit: $limit, offset: $offset, order_by: {id: asc}) {
     id
     height
     name
+    weight
+    order
+    base_experience
   }
   pokemon_v2_pokemon_aggregate {
     aggregate {
@@ -58884,10 +58902,15 @@ export const GetPokemonsDocument = gql`
  * @example
  * const { data, loading, error } = useGetPokemonsQuery({
  *   variables: {
+ *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
  *   },
  * });
  */
-export function useGetPokemonsQuery(baseOptions?: Apollo.QueryHookOptions<GetPokemonsQuery, GetPokemonsQueryVariables>) {
+export function useGetPokemonsQuery(baseOptions: Apollo.QueryHookOptions<GetPokemonsQuery, GetPokemonsQueryVariables> & ({
+    variables: GetPokemonsQueryVariables;
+    skip?: boolean;
+} | { skip: boolean; })) {
     const options = {...defaultOptions, ...baseOptions}
     return Apollo.useQuery<GetPokemonsQuery, GetPokemonsQueryVariables>(GetPokemonsDocument, options);
 }

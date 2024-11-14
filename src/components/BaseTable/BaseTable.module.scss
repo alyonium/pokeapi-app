@@ -18,9 +18,10 @@ tbody tr {
   height: 40px;
   cursor: pointer;
   transition: var(--base-transition);
-}
-tbody tr:hover {
-  background: white;
+
+  &:hover {
+    background: white;
+  }
 }
 
 table {
@@ -30,5 +31,3 @@ table {
   margin-bottom: var(--gap-lg);
   border-spacing: 0;
 }
-
-/*# sourceMappingURL=BaseTable.module.css.map */

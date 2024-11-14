@@ -1,3 +1,26 @@
-.wrapper {
+.contentWrapper {
+  backdrop-filter: blur(var(--backdrop-filter));
+  height: 500px;
+  padding: var(--gap-md);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
 
+.button {
+  width: 200px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: white;
+  margin-bottom: var(--gap-md);
+  transition: var(--base-transition);
+  cursor: pointer;
+
+  &:hover {
+    outline: 1px solid black;
+  }
 }

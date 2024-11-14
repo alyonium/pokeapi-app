@@ -1,9 +1,9 @@
 .wrapper {
-  width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
 }
 
 .countsWrapper {
@@ -11,5 +11,47 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  gap: 8px;
+  gap: var(--gap-xs);
+  cursor: default;
+
+  div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    backdrop-filter: blur(var(--backdrop-filter));
+
+    &:hover {
+      outline: 1px solid black;
+    }
+  }
+}
+
+.iconWrapper {
+  display: flex;
+  align-items: center;
+}
+
+.currentPage {
+  font-weight: bold;
+  background: white;
+  transition: var(--base-transition);
+}
+
+.total {
+  cursor: default;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 var(--gap-xs);
+  height: 40px;
+  font-family: var(--header-font-family);
+  backdrop-filter: blur(var(--backdrop-filter));
+
+  span {
+    margin-left: var(--gap-xs);
+    font-family: var(--body-font-family);
+  }
 }

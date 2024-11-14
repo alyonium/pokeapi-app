@@ -6,11 +6,14 @@ export const GET_POKEMONS = gql(`
         id
         height
         name
+        weight
+        order
+        base_experience
       }
       pokemon_v2_pokemon_aggregate {
         aggregate {
           count
         }
       }
-  }
+    }
 `);

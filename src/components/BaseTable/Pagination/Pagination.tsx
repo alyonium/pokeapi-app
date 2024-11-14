@@ -1,8 +1,8 @@
-import { PAGE_SIZE } from '../../../utils/consts.ts';
-import { useState } from 'react';
+import { PAGINATION_DEFAULT } from '../../../utils/consts.ts';
 import styles from './Pagination.module.scss';
 import ArrowRight from '../../Icons/ArrowRight.tsx';
 import ArrowLeft from '../../Icons/ArrowLeft.tsx';
+import { useLocation } from 'react-router-dom';
 
 type PaginationProps = {
   totalCount: number | undefined;
@@ -10,32 +10,56 @@ type PaginationProps = {
 };
 
 const Pagination = ({ totalCount, onUpdatePagination }: PaginationProps) => {
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [pageSize, setPageSize] = useState<number>(PAGE_SIZE);
-  const totalPages = Math.ceil(totalCount / pageSize);
+  const location = useLocation();
+  const currentPage = location.state?.page || PAGINATION_DEFAULT.PAGE;
+  const currentPageSize =
+    location.state?.pageSize || PAGINATION_DEFAULT.PAGE_SIZE;
 
-  //TODO страничку в роутер закинуть
+  const totalPages =
+    Math.ceil(totalCount / currentPageSize) || PAGINATION_DEFAULT.TOTAL_PAGES;
 
   const updatePagination = (newCurrentPage: number, newPageSize: number) => {
-    setCurrentPage(newCurrentPage);
-    setPageSize(newPageSize);
+    location.state = {
+      page: newCurrentPage,
+      pageSize: newPageSize,
+    };
     onUpdatePagination(newCurrentPage, newPageSize);
   };
+
+  const totalBlock = (
+    <div className={styles.total}>
+      Total:
+      <span>{totalCount}</span>
+    </div>
+  );
 
   if (currentPage === 1 || currentPage === 2) {
     return (
       <div className={styles.wrapper}>
-        <div>Total: {totalCount} </div>
+        {totalBlock}
 
         <div className={styles.countsWrapper}>
-          <div onClick={() => updatePagination(1, pageSize)}>1</div>
-          <div onClick={() => updatePagination(2, pageSize)}>2</div>
-          <div onClick={() => updatePagination(3, pageSize)}>3</div>
-          <div>...</div>
-          <div onClick={() => updatePagination(totalPages, pageSize)}>
+          <div
+            className={currentPage === 1 && styles.currentPage}
+            onClick={() => updatePagination(1, currentPageSize)}
+          >
+            1
+          </div>
+          <div
+            className={currentPage === 2 && styles.currentPage}
+            onClick={() => updatePagination(2, currentPageSize)}
+          >
+            2
+          </div>
+          <div onClick={() => updatePagination(3, currentPageSize)}>3</div>
+          ...
+          <div onClick={() => updatePagination(totalPages, currentPageSize)}>
             {totalPages}
           </div>
-          <div onClick={() => updatePagination(currentPage + 1, pageSize)}>
+          <div
+            className={styles.iconWrapper}
+            onClick={() => updatePagination(currentPage + 1, currentPageSize)}
+          >
             <ArrowRight />
           </div>
         </div>
@@ -46,21 +70,32 @@ const Pagination = ({ totalCount, onUpdatePagination }: PaginationProps) => {
   if (currentPage === totalPages || currentPage === totalPages - 1) {
     return (
       <div className={styles.wrapper}>
-        <div>Total: {totalCount} </div>
+        {totalBlock}
 
         <div className={styles.countsWrapper}>
-          <div onClick={() => updatePagination(currentPage - 1, pageSize)}>
+          <div
+            className={styles.iconWrapper}
+            onClick={() => updatePagination(currentPage - 1, currentPageSize)}
+          >
             <ArrowLeft />
           </div>
-          <div onClick={() => updatePagination(1, pageSize)}>1</div>
-          <div>...</div>
-          <div onClick={() => updatePagination(totalPages - 2, pageSize)}>
+          <div onClick={() => updatePagination(1, currentPageSize)}>1</div>
+          ...
+          <div
+            onClick={() => updatePagination(totalPages - 2, currentPageSize)}
+          >
             {totalPages - 2}
           </div>
-          <div onClick={() => updatePagination(totalPages - 1, pageSize)}>
+          <div
+            className={currentPage === totalPages - 1 && styles.currentPage}
+            onClick={() => updatePagination(totalPages - 1, currentPageSize)}
+          >
             {totalPages - 1}
           </div>
-          <div onClick={() => updatePagination(totalPages, pageSize)}>
+          <div
+            className={currentPage === totalPages && styles.currentPage}
+            onClick={() => updatePagination(totalPages, currentPageSize)}
+          >
             {totalPages}
           </div>
         </div>
@@ -70,28 +105,37 @@ const Pagination = ({ totalCount, onUpdatePagination }: PaginationProps) => {
 
   return (
     <div className={styles.wrapper}>
-      <div>Total: {totalCount} </div>
+      {totalBlock}
 
       <div className={styles.countsWrapper}>
-        <div onClick={() => updatePagination(currentPage - 1, pageSize)}>
+        <div
+          className={styles.iconWrapper}
+          onClick={() => updatePagination(currentPage - 1, currentPageSize)}
+        >
           <ArrowLeft />
         </div>
-        <div onClick={() => updatePagination(1, pageSize)}>1</div>
-        <div>...</div>
-        <div onClick={() => updatePagination(currentPage - 1, pageSize)}>
+        <div onClick={() => updatePagination(1, currentPageSize)}>1</div>
+        ...
+        <div onClick={() => updatePagination(currentPage - 1, currentPageSize)}>
           {currentPage - 1}
         </div>
-        <div onClick={() => updatePagination(currentPage, pageSize)}>
+        <div
+          className={styles.currentPage}
+          onClick={() => updatePagination(currentPage, currentPageSize)}
+        >
           {currentPage}
         </div>
-        <div onClick={() => updatePagination(currentPage + 1, pageSize)}>
+        <div onClick={() => updatePagination(currentPage + 1, currentPageSize)}>
           {currentPage + 1}
         </div>
-        <div>...</div>
-        <div onClick={() => updatePagination(totalPages, pageSize)}>
+        ...
+        <div onClick={() => updatePagination(totalPages, currentPageSize)}>
           {totalPages}
         </div>
-        <div onClick={() => updatePagination(currentPage + 1, pageSize)}>
+        <div
+          className={styles.iconWrapper}
+          onClick={() => updatePagination(currentPage + 1, currentPageSize)}
+        >
           <ArrowRight />
         </div>
       </div>

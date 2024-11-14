@@ -1,3 +1,9 @@
-
+.contentWrapper {
+  display: flex;
+  height: 500px;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
 
 /*# sourceMappingURL=CatalogPage.module.css.map */

@@ -6,7 +6,9 @@ export const GET_POKEMON_BY_ID = gql(`
       id
       height
       name
+      weight
       order
+      base_experience
     }
   }
 `);

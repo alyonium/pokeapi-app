@@ -1,11 +1,13 @@
 import { Column } from '../../types/table';
 import Pagination from './Pagination/Pagination.tsx';
+import styles from './BaseTable.module.css';
 
 type BaseTableProps<T, K extends keyof T> = {
   rows: Array<T>;
   cols: Array<Column<T, K>>;
   totalCount: number | undefined;
   onUpdatePagination: (currentPage, pageSize) => void;
+  onSelectRow: (rowId) => void;
 };
 
 const BaseTable = <T, K extends keyof T>({
@@ -13,24 +15,36 @@ const BaseTable = <T, K extends keyof T>({
   cols,
   totalCount,
   onUpdatePagination,
+  onSelectRow,
 }: BaseTableProps<T, K>) => {
   return (
     <>
-      <table>
+      <table className={styles.wrapper}>
         <thead>
           <tr>
             {cols.map((col) => {
-              return <th key={col.field}>{col.headerName}</th>;
+              return (
+                <th key={col.field} style={{ width: col.width }}>
+                  {col.headerName}
+                </th>
+              );
             })}
           </tr>
         </thead>
 
         <tbody>
-          {rows?.map((row) => {
+          {rows?.map((row, index) => {
             return (
-              <tr>
-                {cols.map((col) => {
-                  return <td key={row[col.field]}>{row[col.field]}</td>;
+              <tr key={index} onClick={() => onSelectRow(row.id)}>
+                {cols.map((col, index) => {
+                  return (
+                    <td
+                      key={`${col.field}${index}}`}
+                      style={{ width: col.width }}
+                    >
+                      {row[col.field]}
+                    </td>
+                  );
                 })}
               </tr>
             );
