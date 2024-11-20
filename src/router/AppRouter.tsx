@@ -9,8 +9,7 @@ const AppRouter = () => {
   return (
     <Routes>
       <Route path="/catalog/:page?&:pageSize?" element={<CatalogPage />} />
-      <Route path="/card/edit/:cardId" element={<CardPage />} />
-      <Route path="/card/view/:cardId" element={<CardPage />} />
+      <Route path="/card/:cardMode/:cardId" element={<CardPage />} />
       <Route path="/error" element={<ErrorPage />} />
       <Route path="*" element={<Navigate to="/catalog" replace />} />
     </Routes>

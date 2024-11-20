@@ -3,7 +3,7 @@ import { GET_POKEMONS } from '../../api/queries/pokemonTable.ts';
 import { GetPokemonsQuery } from '../../api/__generated__/graphql.ts';
 import BaseTable from '../../components/BaseTable/BaseTable.tsx';
 import { TABLE_HEAD } from './consts.ts';
-import { PAGINATION_DEFAULT } from '../../utils/consts.ts';
+import { CARD_MODE, PAGINATION_DEFAULT } from '../../utils/consts.ts';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Header from '../../components/Header/Header.tsx';
 import Loader from '../../components/Loader/Loader.tsx';
@@ -40,8 +40,9 @@ const CatalogPage = () => {
   const onSelectRow = (rowId: number) => {
     navigator(`/card/view/${rowId}`, {
       state: {
-        page: location.state.page,
-        pageSize: location.state.pageSize,
+        page: currentPage,
+        pageSize: currentPageSize,
+        cardMode: CARD_MODE.VIEW,
       },
     });
   };

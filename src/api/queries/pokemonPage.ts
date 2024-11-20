@@ -7,8 +7,12 @@ export const GET_POKEMON_BY_ID = gql(`
       height
       name
       weight
-      order
       base_experience
+      pokemon_v2_pokemonabilities {
+        pokemon_v2_ability {
+          name
+        }
+      }
     }
   }
 `);

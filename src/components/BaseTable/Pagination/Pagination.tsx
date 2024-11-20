@@ -40,13 +40,13 @@ const Pagination = ({ totalCount, onUpdatePagination }: PaginationProps) => {
 
         <div className={styles.countsWrapper}>
           <div
-            className={currentPage === 1 && styles.currentPage}
+            className={currentPage === 1 ? styles.currentPage : ''}
             onClick={() => updatePagination(1, currentPageSize)}
           >
             1
           </div>
           <div
-            className={currentPage === 2 && styles.currentPage}
+            className={currentPage === 2 ? styles.currentPage : ''}
             onClick={() => updatePagination(2, currentPageSize)}
           >
             2
@@ -87,13 +87,13 @@ const Pagination = ({ totalCount, onUpdatePagination }: PaginationProps) => {
             {totalPages - 2}
           </div>
           <div
-            className={currentPage === totalPages - 1 && styles.currentPage}
+            className={currentPage === totalPages - 1 ? styles.currentPage : ''}
             onClick={() => updatePagination(totalPages - 1, currentPageSize)}
           >
             {totalPages - 1}
           </div>
           <div
-            className={currentPage === totalPages && styles.currentPage}
+            className={currentPage === totalPages ? styles.currentPage : ''}
             onClick={() => updatePagination(totalPages, currentPageSize)}
           >
             {totalPages}

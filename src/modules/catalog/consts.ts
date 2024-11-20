@@ -4,13 +4,8 @@ import { GetPokemonsQuery } from '../../api/__generated__/graphql.ts';
 export const TABLE_HEAD: Array<Column<GetPokemonsQuery, 'pokemon_v2_pokemon'>> =
   [
     {
-      field: 'order',
-      width: 100,
-      headerName: 'Order',
-    },
-    {
       field: 'name',
-      width: 300,
+      width: 400,
       headerName: 'Name',
     },
     {

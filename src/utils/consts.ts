@@ -7,3 +7,15 @@ export const PAGINATION_DEFAULT = {
   PAGE: 1,
   TOTAL_PAGES: 0,
 };
+
+export const CARD_MODE = {
+  EDIT: 'edit',
+  VIEW: 'view',
+};
+
+export const BUTTON_MODE = {
+  DEFAULT: 'default',
+  DISABLED: 'disabled',
+  SAVE: 'save',
+  CANCEL: 'cancel',
+};

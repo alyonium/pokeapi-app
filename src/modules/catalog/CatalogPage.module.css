@@ -1,6 +1,6 @@
 .contentWrapper {
   display: flex;
-  height: 500px;
+  min-height: 400px;
   justify-content: center;
   align-items: center;
   flex-direction: column;

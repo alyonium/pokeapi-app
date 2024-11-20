@@ -1,0 +1,42 @@
+.button {
+  width: 200px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: white;
+  margin-bottom: var(--gap-md);
+  transition: var(--base-transition);
+  cursor: pointer;
+}
+.button:hover {
+  outline: 1px solid black;
+}
+
+.cancel {
+  outline: 1px solid var(--red-color);
+}
+.cancel:hover {
+  outline: 1px solid var(--red-color);
+  background: var(--red-color);
+}
+
+.save {
+  outline: 1px solid var(--green-color);
+}
+.save:hover {
+  outline: 1px solid var(--green-color);
+  background: var(--green-color);
+}
+
+.disabled {
+  color: var(--light-black-color);
+  background: var(--gray-color);
+  outline: 1px solid var(--gray-color);
+  cursor: not-allowed;
+}
+.disabled:hover {
+  outline: 1px solid var(--gray-color);
+}
+
+/*# sourceMappingURL=Button.module.css.map */

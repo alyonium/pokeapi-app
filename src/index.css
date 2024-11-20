@@ -7,10 +7,17 @@
     --gap-lg: 32px;
     --gap-xl: 48px;
     --gap-xxl: 64px;
+
     --base-transition: 0.3s;
-    --backdrop-filter: 40px;
+    --backdrop-filter: 10px;
+
     --header-font-family: "Black Mango", Arial, sans-serif;
     --body-font-family: "NeverMind Display", Arial, sans-serif;
+
+    --red-color: #ff5950;
+    --green-color: #75ba4b;
+    --gray-color: #b3b3b3;
+    --light-black-color: #5e5e5e;
 }
 
 body {

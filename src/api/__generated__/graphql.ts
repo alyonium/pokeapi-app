@@ -58792,8 +58792,11 @@ export type GetPokemonByIdQuery = {
         height?: number | null,
         name: string,
         weight?: number | null,
-        order?: number | null,
-        base_experience?: number | null
+        base_experience?: number | null,
+        pokemon_v2_pokemonabilities: Array<{
+            __typename?: 'pokemon_v2_pokemonability',
+            pokemon_v2_ability?: { __typename?: 'pokemon_v2_ability', name: string } | null
+        }>
     }>
 };
 
@@ -58811,7 +58814,6 @@ export type GetPokemonsQuery = {
         height?: number | null,
         name: string,
         weight?: number | null,
-        order?: number | null,
         base_experience?: number | null
     }>,
     pokemon_v2_pokemon_aggregate: {
@@ -58828,8 +58830,12 @@ export const GetPokemonByIdDocument = gql`
     height
     name
     weight
-    order
     base_experience
+    pokemon_v2_pokemonabilities {
+      pokemon_v2_ability {
+        name
+      }
+    }
   }
 }
     `;
@@ -58874,12 +58880,11 @@ export type GetPokemonByIdSuspenseQueryHookResult = ReturnType<typeof useGetPoke
 export type GetPokemonByIdQueryResult = Apollo.QueryResult<GetPokemonByIdQuery, GetPokemonByIdQueryVariables>;
 export const GetPokemonsDocument = gql`
     query GetPokemons($limit: Int!, $offset: Int!) {
-  pokemon_v2_pokemon(limit: $limit, offset: $offset, order_by: {id: asc}) {
+  pokemon_v2_pokemon(limit: $limit, offset: $offset, order_by: {name: asc}) {
     id
     height
     name
     weight
-    order
     base_experience
   }
   pokemon_v2_pokemon_aggregate {
