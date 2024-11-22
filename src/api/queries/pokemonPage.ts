@@ -10,9 +10,19 @@ export const GET_POKEMON_BY_ID = gql(`
       base_experience
       pokemon_v2_pokemonabilities {
         pokemon_v2_ability {
+          id
           name
         }
       }
     }
   }
+`);
+
+export const GET_POKEMON_ABILITIES = gql(`
+  query GetPokemonAbilities {
+    pokemon_v2_ability {
+      name
+      id
+      }
+    }
 `);

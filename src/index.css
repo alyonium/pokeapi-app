@@ -32,3 +32,14 @@ body {
     font-family: var(--body-font-family);
     overflow: hidden;
 }
+
+input {
+    padding: var(--gap-xs) var(--gap-sm);
+    border: 1px solid black;
+    border-radius: unset;
+}
+
+#pokemon_v2_pokemonabilities > div {
+    border: 1px solid black;
+    border-radius: unset;
+}

@@ -9,10 +9,10 @@ export const resolvers = {
           name
           height
           weight
-          order
           base_experience
           pokemon_v2_pokemonabilities {
             pokemon_v2_ability {
+              id
               name
             }
           }

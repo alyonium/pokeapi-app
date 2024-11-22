@@ -33,18 +33,18 @@ const CardViewFields = ({ data }: CardViewFieldsProps) => {
           <span className={styles.dataItemHeader}>Base experience: </span>
           <span>{data?.pokemon_v2_pokemon[0]?.base_experience}</span>
         </div>
-        {data?.pokemon_v2_pokemon[0]?.pokemon_v2_pokemonabilities.length && (
-          <div className={styles.dataItem}>
-            <span className={styles.dataItemHeader}>Pokemon form: </span>
-            <span>
-              {data?.pokemon_v2_pokemon[0]?.pokemon_v2_pokemonabilities
-                .map((ability) => {
-                  return ability.pokemon_v2_ability?.name;
-                })
-                .join(', ')}
-            </span>
-          </div>
-        )}
+        <div className={styles.dataItem}>
+          <span className={styles.dataItemHeader}>Pokemon abilities: </span>
+          <span>
+            {data?.pokemon_v2_pokemon[0]?.pokemon_v2_pokemonabilities.length
+              ? data?.pokemon_v2_pokemon[0]?.pokemon_v2_pokemonabilities
+                  .map((ability) => {
+                    return ability.pokemon_v2_ability?.name;
+                  })
+                  .join(', ')
+              : 'no abilities'}
+          </span>
+        </div>
       </div>
       <img
         alt={data?.pokemon_v2_pokemon[0]?.name}

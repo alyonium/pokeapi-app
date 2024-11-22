@@ -7,6 +7,7 @@ import { GetPokemonByIdQuery } from '../../../api/__generated__/graphql.ts';
 import { PAGINATION_DEFAULT } from '../../../utils/consts.ts';
 import { useMutation } from '@apollo/client';
 import { UPDATE_POKEMON_LOCAL } from '../../../api/mutations/pokemonPage.ts';
+import { FIELDS } from './consts.ts';
 
 type CardEditPageProps = {
   loading: boolean;
@@ -16,6 +17,7 @@ type CardEditPageProps = {
 const CardEditPage = ({ data, loading }: CardEditPageProps) => {
   const { cardId } = useParams();
   const [isFormLocked, setIsFormLocked] = useState<boolean>(false);
+  const [nonValidFields, setNonValidFields] = useState<string[]>([]);
   const [editedFields, setEditedFields] =
     useState<Partial<GetPokemonByIdQuery['pokemon_v2_pokemon'][0]>>();
   const navigator = useNavigate();
@@ -26,13 +28,36 @@ const CardEditPage = ({ data, loading }: CardEditPageProps) => {
   const currentPageSize =
     parseInt(location.state?.pageSize) || PAGINATION_DEFAULT.PAGE_SIZE;
 
+  const checkValidation = () => {
+    let flag = true;
+    Object.keys(editedFields).map((item) => {
+      if (FIELDS[item]?.type === 'text') {
+        if (editedFields![item] === '') {
+          setNonValidFields((prev) => [...prev, FIELDS[item]?.label]);
+          flag = false;
+        }
+      }
+
+      if (FIELDS[item]?.type === 'number') {
+        if (editedFields![item] === 0) {
+          setNonValidFields((prev) => [...prev, FIELDS[item]?.label]);
+          flag = false;
+        }
+      }
+    });
+
+    return flag;
+  };
+
   const handleSave = () => {
-    console.log('save');
-    // TODO validate fields
-    console.log({ editedFields });
+    setNonValidFields([]);
+
+    if (!checkValidation()) {
+      return;
+    }
 
     updatePokemonLocal({
-      variables: { id: cardId, input: editedFields },
+      variables: { id: +cardId, input: editedFields },
     });
 
     navigator(`/card/view/${cardId}`, {
@@ -58,6 +83,7 @@ const CardEditPage = ({ data, loading }: CardEditPageProps) => {
       fieldsBlock={
         <CardEditFields
           data={data}
+          nonValidFields={nonValidFields}
           onFieldChange={(fieldId, fieldValue) => {
             setEditedFields((prev) => ({
               ...prev,

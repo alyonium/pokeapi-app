@@ -58795,9 +58795,17 @@ export type GetPokemonByIdQuery = {
         base_experience?: number | null,
         pokemon_v2_pokemonabilities: Array<{
             __typename?: 'pokemon_v2_pokemonability',
-            pokemon_v2_ability?: { __typename?: 'pokemon_v2_ability', name: string } | null
+            pokemon_v2_ability?: { __typename?: 'pokemon_v2_ability', id: number, name: string } | null
         }>
     }>
+};
+
+export type GetPokemonAbilitiesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetPokemonAbilitiesQuery = {
+    __typename?: 'query_root',
+    pokemon_v2_ability: Array<{ __typename?: 'pokemon_v2_ability', name: string, id: number }>
 };
 
 export type GetPokemonsQueryVariables = Exact<{
@@ -58822,7 +58830,33 @@ export type GetPokemonsQuery = {
     }
 };
 
+export type PokemonFieldsFragment = {
+    __typename?: 'pokemon_v2_pokemon',
+    id: number,
+    name: string,
+    height?: number | null,
+    weight?: number | null,
+    base_experience?: number | null,
+    pokemon_v2_pokemonabilities: Array<{
+        __typename?: 'pokemon_v2_pokemonability',
+        pokemon_v2_ability?: { __typename?: 'pokemon_v2_ability', name: string } | null
+    }>
+};
 
+export const PokemonFieldsFragmentDoc = gql`
+    fragment PokemonFields on pokemon_v2_pokemon {
+  id
+  name
+  height
+  weight
+  base_experience
+  pokemon_v2_pokemonabilities {
+    pokemon_v2_ability {
+      name
+    }
+  }
+}
+    `;
 export const GetPokemonByIdDocument = gql`
     query GetPokemonById($id: Int!) {
   pokemon_v2_pokemon(where: {id: {_eq: $id}}) {
@@ -58833,6 +58867,7 @@ export const GetPokemonByIdDocument = gql`
     base_experience
     pokemon_v2_pokemonabilities {
       pokemon_v2_ability {
+        id
         name
       }
     }
@@ -58878,6 +58913,49 @@ export type GetPokemonByIdQueryHookResult = ReturnType<typeof useGetPokemonByIdQ
 export type GetPokemonByIdLazyQueryHookResult = ReturnType<typeof useGetPokemonByIdLazyQuery>;
 export type GetPokemonByIdSuspenseQueryHookResult = ReturnType<typeof useGetPokemonByIdSuspenseQuery>;
 export type GetPokemonByIdQueryResult = Apollo.QueryResult<GetPokemonByIdQuery, GetPokemonByIdQueryVariables>;
+export const GetPokemonAbilitiesDocument = gql`
+    query GetPokemonAbilities {
+  pokemon_v2_ability {
+    name
+    id
+  }
+}
+    `;
+
+/**
+ * __useGetPokemonAbilitiesQuery__
+ *
+ * To run a query within a React component, call `useGetPokemonAbilitiesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetPokemonAbilitiesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetPokemonAbilitiesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetPokemonAbilitiesQuery(baseOptions?: Apollo.QueryHookOptions<GetPokemonAbilitiesQuery, GetPokemonAbilitiesQueryVariables>) {
+    const options = {...defaultOptions, ...baseOptions}
+    return Apollo.useQuery<GetPokemonAbilitiesQuery, GetPokemonAbilitiesQueryVariables>(GetPokemonAbilitiesDocument, options);
+}
+
+export function useGetPokemonAbilitiesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPokemonAbilitiesQuery, GetPokemonAbilitiesQueryVariables>) {
+    const options = {...defaultOptions, ...baseOptions}
+    return Apollo.useLazyQuery<GetPokemonAbilitiesQuery, GetPokemonAbilitiesQueryVariables>(GetPokemonAbilitiesDocument, options);
+}
+
+export function useGetPokemonAbilitiesSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetPokemonAbilitiesQuery, GetPokemonAbilitiesQueryVariables>) {
+    const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+    return Apollo.useSuspenseQuery<GetPokemonAbilitiesQuery, GetPokemonAbilitiesQueryVariables>(GetPokemonAbilitiesDocument, options);
+}
+
+export type GetPokemonAbilitiesQueryHookResult = ReturnType<typeof useGetPokemonAbilitiesQuery>;
+export type GetPokemonAbilitiesLazyQueryHookResult = ReturnType<typeof useGetPokemonAbilitiesLazyQuery>;
+export type GetPokemonAbilitiesSuspenseQueryHookResult = ReturnType<typeof useGetPokemonAbilitiesSuspenseQuery>;
+export type GetPokemonAbilitiesQueryResult = Apollo.QueryResult<GetPokemonAbilitiesQuery, GetPokemonAbilitiesQueryVariables>;
 export const GetPokemonsDocument = gql`
     query GetPokemons($limit: Int!, $offset: Int!) {
   pokemon_v2_pokemon(limit: $limit, offset: $offset, order_by: {name: asc}) {

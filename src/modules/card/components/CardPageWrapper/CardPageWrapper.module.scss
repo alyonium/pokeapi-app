@@ -41,3 +41,24 @@
     font-weight: bold;
   }
 }
+
+.abilitiesWrapper {
+  display: flex;
+  gap: var(--gap-sm);
+}
+
+.abilityWrapper {
+  background: var(--gray-color);
+  padding: var(--gap-xs) var(--gap-sm);
+}
+
+.selectListDisabledOption {
+  pointer-events: none;
+  background: var(--gray-color);
+}
+
+.validationMessage {
+  background: white;
+  padding: var(--gap-sm);
+  color: var(--red-color);
+}
