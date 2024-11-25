@@ -18,6 +18,7 @@ const BaseTable = <T, K extends keyof T>({
   onSelectRow,
 }: BaseTableProps<T, K>) => {
   return (
+    // TODO: add select for counting changes
     <>
       <table className={styles.wrapper}>
         <thead>
