@@ -30,7 +30,7 @@ const CardEditPage = ({ data, loading }: CardEditPageProps) => {
 
   const checkValidation = () => {
     let flag = true;
-    Object.keys(editedFields).map((item) => {
+    Object.keys(editedFields)?.map((item) => {
       if (FIELDS[item]?.type === 'text') {
         if (editedFields![item] === '') {
           setNonValidFields((prev) => [...prev, FIELDS[item]?.label]);
@@ -59,6 +59,15 @@ const CardEditPage = ({ data, loading }: CardEditPageProps) => {
     updatePokemonLocal({
       variables: { id: +cardId, input: editedFields },
     });
+
+    const pokemon = JSON.parse(
+      localStorage.getItem(`pokemon_v2_pokemon:${cardId}`),
+    );
+
+    localStorage.setItem(
+      `pokemon_v2_pokemon:${cardId}`,
+      JSON.stringify({ ...pokemon, id: +cardId, ...editedFields }),
+    );
 
     navigator(`/card/view/${cardId}`, {
       state: {

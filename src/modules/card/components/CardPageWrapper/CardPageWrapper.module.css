@@ -2,7 +2,6 @@
   backdrop-filter: blur(var(--backdrop-filter));
   height: 500px;
   padding: var(--gap-md);
-  width: 100%;
   display: flex;
   flex-direction: row;
   align-items: center;

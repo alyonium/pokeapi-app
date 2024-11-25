@@ -6,11 +6,15 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { CARD_MODE } from '../../utils/consts.ts';
 import CardViewPage from './view/CardViewPage.tsx';
 import CardEditPage from './edit/CardEditPage.tsx';
+import { useState, useEffect } from 'react';
 
 const CardPage = () => {
   const { cardId, cardMode } = useParams();
   const navigator = useNavigate();
   const location = useLocation();
+  const [updatedData, setUpdatedData] = useState<
+    GetPokemonByIdQuery | undefined
+  >();
 
   if (
     CARD_MODE.VIEW !== cardMode &&
@@ -30,16 +34,33 @@ const CardPage = () => {
     },
   );
 
+  useEffect(() => {
+    const pokemon = localStorage.getItem(`pokemon_v2_pokemon:${cardId}`);
+    if (pokemon) {
+      const editedPokemonFields = JSON.parse(pokemon);
+      setUpdatedData({
+        pokemon_v2_pokemon: [
+          {
+            ...data?.pokemon_v2_pokemon[0],
+            ...editedPokemonFields,
+          },
+        ],
+      }) as GetPokemonByIdQuery;
+    } else {
+      setUpdatedData(data);
+    }
+  }, [data]);
+
   if (error) {
     navigator('/error');
   }
 
   if (cardMode === CARD_MODE.VIEW) {
-    return <CardViewPage loading={loading} data={data} />;
+    return <CardViewPage loading={loading} data={updatedData} />;
   }
 
   if (cardMode === CARD_MODE.EDIT) {
-    return <CardEditPage loading={loading} data={data} />;
+    return <CardEditPage loading={loading} data={updatedData} />;
   }
 };
 

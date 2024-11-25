@@ -36,7 +36,7 @@ const CardViewFields = ({ data }: CardViewFieldsProps) => {
         <div className={styles.dataItem}>
           <span className={styles.dataItemHeader}>Pokemon abilities: </span>
           <span>
-            {data?.pokemon_v2_pokemon[0]?.pokemon_v2_pokemonabilities.length
+            {data?.pokemon_v2_pokemon[0]?.pokemon_v2_pokemonabilities?.length
               ? data?.pokemon_v2_pokemon[0]?.pokemon_v2_pokemonabilities
                   .map((ability) => {
                     return ability.pokemon_v2_ability?.name;

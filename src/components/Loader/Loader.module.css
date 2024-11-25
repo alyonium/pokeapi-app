@@ -3,7 +3,7 @@
   height: 11.2px;
   animation: loader 1s infinite linear;
   border-radius: 11.2px;
-  box-shadow: 28px 0 0 0 black, 17.4px 21.8px 0 0 black, -6.2px 27.2px 0 0 black, -25.2px 12px 0 0 black, -25.2px -12px 0 0 black, -6.2px -27.2px 0 0 black, 17.4px -21.8px 0 0 black;
+  box-shadow: 28px 0 0 0 #aec0de, 17.4px 21.8px 0 0 #36b7d6, -6.2px 27.2px 0 0 #057cc9, -25.2px 12px 0 0 #faf8d8, -25.2px -12px 0 0 #658bbe, -6.2px -27.2px 0 0 #066bae, 17.4px -21.8px 0 0 #18aedc;
 }
 
 @keyframes loader {

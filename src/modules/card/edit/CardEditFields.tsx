@@ -114,7 +114,7 @@ const CardEditFields = ({
             id={'pokemon_v2_pokemonabilities'}
             onChange={(value) => onSelectChange(value)}
             options={
-              pokemonAbilitiesList?.pokemon_v2_ability.map((item) => ({
+              pokemonAbilitiesList?.pokemon_v2_ability?.map((item) => ({
                 value: item.id,
                 label: item.name,
               })) as never

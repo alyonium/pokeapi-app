@@ -8,10 +8,15 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import Header from '../../components/Header/Header.tsx';
 import Loader from '../../components/Loader/Loader.tsx';
 import styles from './CatalogPage.module.scss';
+import { useEffect, useState } from 'react';
 
 const CatalogPage = () => {
   const navigator = useNavigate();
   const location = useLocation();
+  const [updatedData, setUpdatedData] = useState<
+    GetPokemonsQuery | undefined
+  >();
+
   const currentPage = parseInt(location.state?.page) || PAGINATION_DEFAULT.PAGE;
   const currentPageSize =
     parseInt(location.state?.pageSize) || PAGINATION_DEFAULT.PAGE_SIZE;
@@ -32,6 +37,27 @@ const CatalogPage = () => {
       offset: (currentPage - 1) * currentPageSize,
     });
   };
+
+  useEffect(() => {
+    const updatedFromLocalStorageData = data?.pokemon_v2_pokemon?.map(
+      (item) => {
+        const pokemon = localStorage.getItem(`pokemon_v2_pokemon:${item.id}`);
+        if (pokemon) {
+          const editedPokemonFields = JSON.parse(pokemon);
+          return { ...item, ...editedPokemonFields };
+        } else {
+          return item;
+        }
+      },
+    );
+
+    if (updatedFromLocalStorageData) {
+      setUpdatedData({
+        pokemon_v2_pokemon: [...updatedFromLocalStorageData],
+        pokemon_v2_pokemon_aggregate: data?.pokemon_v2_pokemon_aggregate,
+      } as GetPokemonsQuery);
+    }
+  }, [data]);
 
   if (error) {
     navigator('/error');
@@ -56,7 +82,7 @@ const CatalogPage = () => {
         ) : (
           <BaseTable
             cols={TABLE_HEAD}
-            rows={data?.pokemon_v2_pokemon as Array<GetPokemonsQuery>}
+            rows={updatedData?.pokemon_v2_pokemon as Array<GetPokemonsQuery>}
             totalCount={data?.pokemon_v2_pokemon_aggregate.aggregate?.count}
             onUpdatePagination={updateTable}
             onSelectRow={(rowId: number) => onSelectRow(rowId)}
