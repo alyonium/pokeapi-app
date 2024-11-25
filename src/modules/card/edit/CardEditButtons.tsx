@@ -6,17 +6,17 @@ import { BUTTON_MODE } from '../../../utils/consts.ts';
 type CardEditButtonsType = {
   currentPage: number;
   currentPageSize: number;
-  cardId: string | undefined;
   isFormLocked: boolean;
   handleSave: () => void;
+  handleCancel: () => void;
 };
 
 const CardEditButtons = ({
   currentPage,
   currentPageSize,
-  cardId,
   isFormLocked,
   handleSave,
+  handleCancel,
 }: CardEditButtonsType) => {
   const navigator = useNavigate();
 
@@ -38,15 +38,7 @@ const CardEditButtons = ({
         <Button
           state={BUTTON_MODE.CANCEL}
           text="Cancel"
-          onClick={() =>
-            // TODO make warning modal (fields already edited, do you want to cancel this operation?)
-            navigator(`/card/view/${cardId}`, {
-              state: {
-                page: currentPage,
-                pageSize: currentPageSize,
-              },
-            })
-          }
+          onClick={handleCancel}
         />
         <Button text="Save" state={BUTTON_MODE.SAVE} onClick={handleSave} />
       </div>

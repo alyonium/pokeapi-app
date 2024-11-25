@@ -45,7 +45,7 @@ const CardPage = () => {
             ...editedPokemonFields,
           },
         ],
-      }) as GetPokemonByIdQuery;
+      } as GetPokemonByIdQuery);
     } else {
       setUpdatedData(data);
     }

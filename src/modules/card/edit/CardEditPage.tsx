@@ -4,10 +4,13 @@ import CardEditFields from './CardEditFields.tsx';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useState } from 'react';
 import { GetPokemonByIdQuery } from '../../../api/__generated__/graphql.ts';
-import { PAGINATION_DEFAULT } from '../../../utils/consts.ts';
+import { BUTTON_MODE, PAGINATION_DEFAULT } from '../../../utils/consts.ts';
 import { useMutation } from '@apollo/client';
 import { UPDATE_POKEMON_LOCAL } from '../../../api/mutations/pokemonPage.ts';
 import { FIELDS } from './consts.ts';
+import BaseModal from '../../../components/BaseModal/BaseModal.tsx';
+import styles from '../components/CardPageWrapper/CardPageWrapper.module.scss';
+import Button from '../../../components/Button/Button.tsx';
 
 type CardEditPageProps = {
   loading: boolean;
@@ -17,6 +20,7 @@ type CardEditPageProps = {
 const CardEditPage = ({ data, loading }: CardEditPageProps) => {
   const { cardId } = useParams();
   const [isFormLocked, setIsFormLocked] = useState<boolean>(false);
+  const [isModalWindowOpen, setIsModalWindow] = useState<boolean>(false);
   const [nonValidFields, setNonValidFields] = useState<string[]>([]);
   const [editedFields, setEditedFields] =
     useState<Partial<GetPokemonByIdQuery['pokemon_v2_pokemon'][0]>>();
@@ -27,6 +31,15 @@ const CardEditPage = ({ data, loading }: CardEditPageProps) => {
   const currentPage = parseInt(location.state?.page) || PAGINATION_DEFAULT.PAGE;
   const currentPageSize =
     parseInt(location.state?.pageSize) || PAGINATION_DEFAULT.PAGE_SIZE;
+
+  const navigateToCardViewMode = () => {
+    navigator(`/card/view/${cardId}`, {
+      state: {
+        page: currentPage,
+        pageSize: currentPageSize,
+      },
+    });
+  };
 
   const checkValidation = () => {
     let flag = true;
@@ -69,42 +82,70 @@ const CardEditPage = ({ data, loading }: CardEditPageProps) => {
       JSON.stringify({ ...pokemon, id: +cardId, ...editedFields }),
     );
 
-    navigator(`/card/view/${cardId}`, {
-      state: {
-        page: currentPage,
-        pageSize: currentPageSize,
-      },
-    });
+    navigateToCardViewMode();
+  };
+
+  const handleCancel = () => {
+    if (!isFormLocked) {
+      navigateToCardViewMode();
+    } else {
+      setIsModalWindow(true);
+    }
   };
 
   return (
-    <CardPageWrapper
-      loading={loading}
-      buttonsBlock={
-        <CardEditButtons
-          currentPage={currentPage}
-          currentPageSize={currentPageSize}
-          cardId={cardId}
-          isFormLocked={isFormLocked}
-          handleSave={handleSave}
+    <>
+      <CardPageWrapper
+        loading={loading}
+        buttonsBlock={
+          <CardEditButtons
+            currentPage={currentPage}
+            currentPageSize={currentPageSize}
+            cardId={cardId}
+            isFormLocked={isFormLocked}
+            handleSave={handleSave}
+            handleCancel={handleCancel}
+          />
+        }
+        fieldsBlock={
+          <CardEditFields
+            data={data}
+            nonValidFields={nonValidFields}
+            onFieldChange={(fieldId, fieldValue) => {
+              setEditedFields((prev) => ({
+                ...prev,
+                [fieldId]: fieldValue,
+              }));
+            }}
+            lockForm={() => {
+              setIsFormLocked(true);
+            }}
+          />
+        }
+      />
+      {isModalWindowOpen && (
+        <BaseModal
+          header="Warning"
+          text="You already changed something in the form. Are you sure you want to discard your changes?"
+          buttons={
+            <>
+              <div className={styles.buttonGroupWrapper}>
+                <Button
+                  text="Continue editing"
+                  state={BUTTON_MODE.SAVE}
+                  onClick={() => setIsModalWindow(false)}
+                />
+                <Button
+                  text="Discard changes"
+                  state={BUTTON_MODE.CANCEL}
+                  onClick={navigateToCardViewMode}
+                />
+              </div>
+            </>
+          }
         />
-      }
-      fieldsBlock={
-        <CardEditFields
-          data={data}
-          nonValidFields={nonValidFields}
-          onFieldChange={(fieldId, fieldValue) => {
-            setEditedFields((prev) => ({
-              ...prev,
-              [fieldId]: fieldValue,
-            }));
-          }}
-          lockForm={() => {
-            setIsFormLocked(true);
-          }}
-        />
-      }
-    />
+      )}
+    </>
   );
 };
 
