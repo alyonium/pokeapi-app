@@ -3,11 +3,11 @@ import { Options } from 'react-select';
 
 export const mapPokemonAbilitiesToFront = (
   data: GetPokemonByIdQuery | undefined,
-): Options<{ label: string; value: string }> | [] => {
+): Options<{ label: string; value: number }> | [] => {
   return (
     data?.pokemon_v2_pokemon[0].pokemon_v2_pokemonabilities?.map((item) => {
       return {
-        value: `${item.pokemon_v2_ability!.id}`,
+        value: +item.pokemon_v2_ability!.id,
         label: item.pokemon_v2_ability!.name,
       };
     }) || []

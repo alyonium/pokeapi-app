@@ -40,6 +40,13 @@
   transition: var(--base-transition);
 }
 
+.totalWrapper {
+  display: flex;
+  flex-direction: row;
+  gap: var(--gap-sm);
+  align-items: center;
+}
+
 .total {
   cursor: default;
   display: flex;

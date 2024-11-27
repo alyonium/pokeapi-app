@@ -62,6 +62,10 @@ const CardEditFields = ({
   };
 
   const onSelectChange = (value) => {
+    if (!formTouched) {
+      setFromTouched(true);
+    }
+
     onFieldChange(
       'pokemon_v2_pokemonabilities',
       mapPokemonAbilitiesToBack(value) as never,

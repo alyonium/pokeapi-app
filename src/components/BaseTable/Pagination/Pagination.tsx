@@ -3,6 +3,7 @@ import styles from './Pagination.module.scss';
 import ArrowRight from '../../Icons/ArrowRight.tsx';
 import ArrowLeft from '../../Icons/ArrowLeft.tsx';
 import { useLocation } from 'react-router-dom';
+import Select from 'react-select';
 
 type PaginationProps = {
   totalCount: number | undefined;
@@ -33,10 +34,37 @@ const Pagination = ({ totalCount, onUpdatePagination }: PaginationProps) => {
     </div>
   );
 
+  const pageSizeBlock = (
+    <Select
+      id="pageSizeOptions"
+      onChange={(value) =>
+        updatePagination(PAGINATION_DEFAULT.PAGE, value.value)
+      }
+      options={[
+        {
+          value: PAGINATION_DEFAULT.PAGE_SIZE,
+          label: PAGINATION_DEFAULT.PAGE_SIZE,
+        },
+        {
+          value: 5,
+          label: 5,
+        },
+      ]}
+      defaultValue={{
+        value: PAGINATION_DEFAULT.PAGE_SIZE,
+        label: PAGINATION_DEFAULT.PAGE_SIZE,
+      }}
+    />
+  );
+
   if (currentPage === 1 || currentPage === 2) {
     return (
       <div className={styles.wrapper}>
-        {totalBlock}
+        <div className={styles.totalWrapper}>
+          {totalBlock}
+
+          {pageSizeBlock}
+        </div>
 
         <div className={styles.countsWrapper}>
           <div
@@ -70,7 +98,11 @@ const Pagination = ({ totalCount, onUpdatePagination }: PaginationProps) => {
   if (currentPage === totalPages || currentPage === totalPages - 1) {
     return (
       <div className={styles.wrapper}>
-        {totalBlock}
+        <div className={styles.totalWrapper}>
+          {totalBlock}
+
+          {pageSizeBlock}
+        </div>
 
         <div className={styles.countsWrapper}>
           <div
@@ -105,7 +137,11 @@ const Pagination = ({ totalCount, onUpdatePagination }: PaginationProps) => {
 
   return (
     <div className={styles.wrapper}>
-      {totalBlock}
+      <div className={styles.totalWrapper}>
+        {totalBlock}
+
+        {pageSizeBlock}
+      </div>
 
       <div className={styles.countsWrapper}>
         <div

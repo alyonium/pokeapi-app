@@ -37,9 +37,17 @@ input {
     padding: var(--gap-xs) var(--gap-sm);
     border: 1px solid black;
     border-radius: unset;
+    outline: none;
 }
 
-#pokemon_v2_pokemonabilities > div {
-    border: 1px solid black;
-    border-radius: unset;
+#pokemon_v2_pokemonabilities,
+#pageSizeOptions {
+    height: 38px;
+
+    & > div {
+        border: 1px solid black !important;
+        border-radius: unset !important;
+        outline: none !important;
+        box-shadow: unset;
+    }
 }
