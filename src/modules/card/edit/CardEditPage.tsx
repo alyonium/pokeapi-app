@@ -1,16 +1,17 @@
 import CardPageWrapper from '../components/CardPageWrapper/CardPageWrapper.tsx';
 import CardEditButtons from './CardEditButtons.tsx';
 import CardEditFields from './CardEditFields.tsx';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import { useState } from 'react';
 import { GetPokemonByIdQuery } from '../../../api/__generated__/graphql.ts';
-import { BUTTON_MODE, PAGINATION_DEFAULT } from '../../../utils/consts.ts';
+import { BUTTON_MODE } from '../../../utils/consts.ts';
 import { useMutation } from '@apollo/client';
 import { UPDATE_POKEMON_LOCAL } from '../../../api/mutations/pokemonPage.ts';
 import { FIELDS } from '../consts.ts';
 import BaseModal from '../../../components/BaseModal/BaseModal.tsx';
 import styles from '../components/CardPageWrapper/CardPageWrapper.module.scss';
 import Button from '../../../components/Button/Button.tsx';
+import { PAGINATION_DEFAULT } from '../../../utils/consts.ts';
 
 type CardEditPageProps = {
   loading: boolean;
@@ -42,6 +43,11 @@ const CardEditPage = ({ data, loading }: CardEditPageProps) => {
 
   const checkValidation = () => {
     let flag = true;
+
+    if (!editedFields) {
+      return true;
+    }
+
     Object.keys(editedFields)?.map((item) => {
       if (FIELDS[item]?.type === 'text') {
         if (editedFields![item] === '') {

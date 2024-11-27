@@ -1,9 +1,9 @@
 import CardPageWrapper from '../components/CardPageWrapper/CardPageWrapper.tsx';
 import CardViewButtons from './CardViewButtons.tsx';
 import CardViewFields from './CardViewFields.tsx';
-import { PAGINATION_DEFAULT } from '../../../utils/consts.ts';
 import { useLocation, useParams } from 'react-router-dom';
 import { GetPokemonByIdQuery } from '../../../api/__generated__/graphql.ts';
+import { PAGINATION_DEFAULT } from '../../../utils/consts.ts';
 
 type CardViewPageProps = {
   loading: boolean;

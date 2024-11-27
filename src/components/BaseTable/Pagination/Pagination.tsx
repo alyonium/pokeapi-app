@@ -2,7 +2,7 @@ import { PAGINATION_DEFAULT } from '../../../utils/consts.ts';
 import styles from './Pagination.module.scss';
 import ArrowRight from '../../Icons/ArrowRight.tsx';
 import ArrowLeft from '../../Icons/ArrowLeft.tsx';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useSearchParams } from 'react-router-dom';
 import Select from 'react-select';
 
 type PaginationProps = {
@@ -11,18 +11,20 @@ type PaginationProps = {
 };
 
 const Pagination = ({ totalCount, onUpdatePagination }: PaginationProps) => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const location = useLocation();
-  const currentPage = location.state?.page || PAGINATION_DEFAULT.PAGE;
+  const currentPage =
+    +searchParams.get('page') || parseInt(location.state?.page);
   const currentPageSize =
-    location.state?.pageSize || PAGINATION_DEFAULT.PAGE_SIZE;
+    +searchParams.get('pageSize') || parseInt(location.state?.pageSize);
   const totalPages =
     Math.ceil(totalCount / currentPageSize) || PAGINATION_DEFAULT.TOTAL_PAGES;
 
   const updatePagination = (newCurrentPage: number, newPageSize: number) => {
-    location.state = {
-      page: newCurrentPage,
-      pageSize: newPageSize,
-    };
+    setSearchParams({
+      page: `${newCurrentPage}`,
+      pageSize: `${newPageSize}`,
+    });
     onUpdatePagination(newCurrentPage, newPageSize);
   };
 
@@ -50,8 +52,8 @@ const Pagination = ({ totalCount, onUpdatePagination }: PaginationProps) => {
         },
       ]}
       defaultValue={{
-        value: PAGINATION_DEFAULT.PAGE_SIZE,
-        label: PAGINATION_DEFAULT.PAGE_SIZE,
+        value: currentPageSize,
+        label: currentPageSize,
       }}
     />
   );

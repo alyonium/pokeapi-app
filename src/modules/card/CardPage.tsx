@@ -2,7 +2,7 @@ import { useQuery } from '@apollo/client';
 import { GetPokemonByIdQuery } from '../../api/__generated__/graphql.ts';
 import { GET_POKEMON_BY_ID } from '../../api/queries/pokemonPage.ts';
 import { useParams } from 'react-router-dom';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { CARD_MODE } from '../../utils/consts.ts';
 import CardViewPage from './view/CardViewPage.tsx';
 import CardEditPage from './edit/CardEditPage.tsx';
@@ -11,17 +11,11 @@ import { useState, useEffect } from 'react';
 const CardPage = () => {
   const { cardId, cardMode } = useParams();
   const navigator = useNavigate();
-  const location = useLocation();
   const [updatedData, setUpdatedData] = useState<
     GetPokemonByIdQuery | undefined
   >();
 
-  if (
-    CARD_MODE.VIEW !== cardMode &&
-    CARD_MODE.EDIT !== cardMode &&
-    CARD_MODE.VIEW !== location.state?.cardMode &&
-    CARD_MODE.EDIT !== location.state?.cardMode
-  ) {
+  if (CARD_MODE.VIEW !== cardMode && CARD_MODE.EDIT !== cardMode) {
     navigator('/error');
   }
 
