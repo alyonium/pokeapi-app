@@ -2,6 +2,7 @@ import styles from '../components/CardPageWrapper/CardPageWrapper.module.scss';
 import { GetPokemonByIdQuery } from '../../../api/__generated__/graphql.ts';
 import { IMAGE_URL } from '../../../utils/consts.ts';
 import { useNavigate } from 'react-router-dom';
+import { FIELDS } from '../consts.ts';
 
 type CardViewFieldsProps = {
   data: GetPokemonByIdQuery | undefined;
@@ -17,22 +18,17 @@ const CardViewFields = ({ data }: CardViewFieldsProps) => {
   return (
     <>
       <div className={styles.dataItemWrapper}>
-        <div className={styles.dataItem}>
-          <span className={styles.dataItemHeader}>Name: </span>
-          <span>{data?.pokemon_v2_pokemon[0]?.name}</span>
-        </div>
-        <div className={styles.dataItem}>
-          <span className={styles.dataItemHeader}>Height: </span>
-          <span>{data?.pokemon_v2_pokemon[0]?.height}</span>
-        </div>
-        <div className={styles.dataItem}>
-          <span className={styles.dataItemHeader}>Weight: </span>
-          <span>{data?.pokemon_v2_pokemon[0]?.weight}</span>
-        </div>
-        <div className={styles.dataItem}>
-          <span className={styles.dataItemHeader}>Base experience: </span>
-          <span>{data?.pokemon_v2_pokemon[0]?.base_experience}</span>
-        </div>
+        {Object.keys(FIELDS).map((item: string) => {
+          return (
+            <div key={FIELDS[item].id} className={styles.dataItem}>
+              <span className={styles.dataItemHeader}>
+                {FIELDS[item].label}:{' '}
+              </span>
+              <span>{data?.pokemon_v2_pokemon[0][FIELDS[item].id]}</span>
+            </div>
+          );
+        })}
+
         <div className={styles.dataItem}>
           <span className={styles.dataItemHeader}>Pokemon abilities: </span>
           <span>

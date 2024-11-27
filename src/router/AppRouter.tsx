@@ -8,7 +8,7 @@ import ErrorPage from '../modules/error/ErrorPage.tsx';
 const AppRouter = () => {
   return (
     <Routes>
-      <Route path="/catalog/:page?&:pageSize?" element={<CatalogPage />} />
+      <Route path="/catalog" element={<CatalogPage />} />
       <Route path="/card/:cardMode/:cardId" element={<CardPage />} />
       <Route path="/error" element={<ErrorPage />} />
       <Route path="*" element={<Navigate to="/catalog" replace />} />

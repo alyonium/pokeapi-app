@@ -13,13 +13,12 @@ import { useEffect, useState } from 'react';
 const CatalogPage = () => {
   const navigator = useNavigate();
   const location = useLocation();
+  const currentPage = location.state?.page || PAGINATION_DEFAULT.PAGE;
+  const currentPageSize =
+    parseInt(location.state?.pageSize) || PAGINATION_DEFAULT.PAGE_SIZE;
   const [updatedData, setUpdatedData] = useState<
     GetPokemonsQuery | undefined
   >();
-
-  const currentPage = parseInt(location.state?.page) || PAGINATION_DEFAULT.PAGE;
-  const currentPageSize =
-    parseInt(location.state?.pageSize) || PAGINATION_DEFAULT.PAGE_SIZE;
 
   const { loading, error, data, refetch } = useQuery<GetPokemonsQuery>(
     GET_POKEMONS,
@@ -59,10 +58,6 @@ const CatalogPage = () => {
     }
   }, [data]);
 
-  if (error) {
-    navigator('/error');
-  }
-
   const onSelectRow = (rowId: number) => {
     navigator(`/card/view/${rowId}`, {
       state: {
@@ -72,6 +67,10 @@ const CatalogPage = () => {
       },
     });
   };
+
+  if (error) {
+    navigator('/error');
+  }
 
   return (
     <>

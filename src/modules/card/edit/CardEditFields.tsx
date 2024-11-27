@@ -6,7 +6,7 @@ import {
 import { IMAGE_URL } from '../../../utils/consts.ts';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FIELDS } from './consts.ts';
+import { FIELDS } from '../consts.ts';
 import { useQuery } from '@apollo/client';
 import { GET_POKEMON_ABILITIES } from '../../../api/queries/pokemonPage.ts';
 import {
@@ -79,13 +79,12 @@ const CardEditFields = ({
   return (
     <>
       <div className={styles.dataItemWrapper}>
-        {nonValidFields.length ? (
+        {nonValidFields.length > 0 && (
           <span className={styles.validationMessage}>
             It is required to fill these fields: {nonValidFields.join(', ')}
           </span>
-        ) : (
-          ''
         )}
+
         {Object.keys(FIELDS).map((item: string) => {
           return (
             <div key={FIELDS[item].id} className={styles.dataItem}>
@@ -117,13 +116,11 @@ const CardEditFields = ({
             isMulti
             id={'pokemon_v2_pokemonabilities'}
             onChange={(value) => onSelectChange(value)}
-            options={
-              pokemonAbilitiesList?.pokemon_v2_ability?.map((item) => ({
-                value: item.id,
-                label: item.name,
-              })) as never
-            }
-            defaultValue={mapPokemonAbilitiesToFront(data) as never}
+            options={pokemonAbilitiesList?.pokemon_v2_ability?.map((item) => ({
+              value: item.id,
+              label: item.name,
+            }))}
+            defaultValue={mapPokemonAbilitiesToFront(data)}
           />
         </div>
       </div>

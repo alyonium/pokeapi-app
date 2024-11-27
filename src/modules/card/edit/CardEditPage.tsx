@@ -7,7 +7,7 @@ import { GetPokemonByIdQuery } from '../../../api/__generated__/graphql.ts';
 import { BUTTON_MODE, PAGINATION_DEFAULT } from '../../../utils/consts.ts';
 import { useMutation } from '@apollo/client';
 import { UPDATE_POKEMON_LOCAL } from '../../../api/mutations/pokemonPage.ts';
-import { FIELDS } from './consts.ts';
+import { FIELDS } from '../consts.ts';
 import BaseModal from '../../../components/BaseModal/BaseModal.tsx';
 import styles from '../components/CardPageWrapper/CardPageWrapper.module.scss';
 import Button from '../../../components/Button/Button.tsx';
@@ -18,16 +18,15 @@ type CardEditPageProps = {
 };
 
 const CardEditPage = ({ data, loading }: CardEditPageProps) => {
+  const navigator = useNavigate();
+  const location = useLocation();
   const { cardId } = useParams();
   const [isFormLocked, setIsFormLocked] = useState<boolean>(false);
   const [isModalWindowOpen, setIsModalWindow] = useState<boolean>(false);
   const [nonValidFields, setNonValidFields] = useState<string[]>([]);
   const [editedFields, setEditedFields] =
     useState<Partial<GetPokemonByIdQuery['pokemon_v2_pokemon'][0]>>();
-  const navigator = useNavigate();
-  const location = useLocation();
   const [updatePokemonLocal] = useMutation(UPDATE_POKEMON_LOCAL);
-
   const currentPage = parseInt(location.state?.page) || PAGINATION_DEFAULT.PAGE;
   const currentPageSize =
     parseInt(location.state?.pageSize) || PAGINATION_DEFAULT.PAGE_SIZE;
@@ -123,6 +122,7 @@ const CardEditPage = ({ data, loading }: CardEditPageProps) => {
           />
         }
       />
+
       {isModalWindowOpen && (
         <BaseModal
           header="Warning"

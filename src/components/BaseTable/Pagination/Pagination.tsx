@@ -15,7 +15,6 @@ const Pagination = ({ totalCount, onUpdatePagination }: PaginationProps) => {
   const currentPage = location.state?.page || PAGINATION_DEFAULT.PAGE;
   const currentPageSize =
     location.state?.pageSize || PAGINATION_DEFAULT.PAGE_SIZE;
-
   const totalPages =
     Math.ceil(totalCount / currentPageSize) || PAGINATION_DEFAULT.TOTAL_PAGES;
 

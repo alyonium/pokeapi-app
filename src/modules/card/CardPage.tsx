@@ -45,13 +45,13 @@ const CardPage = () => {
             ...editedPokemonFields,
           },
         ],
-      } as GetPokemonByIdQuery);
+      });
     } else {
       setUpdatedData(data);
     }
   }, [data]);
 
-  if (error) {
+  if (error || updatedData?.pokemon_v2_pokemon.length <= 0) {
     navigator('/error');
   }
 

@@ -20,6 +20,7 @@ export const resolvers = {
       `;
 
       const pokemonId = `pokemon_v2_pokemon:${id}`;
+
       const existingPokemon = cache.readFragment({
         id: pokemonId,
         fragment,

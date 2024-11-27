@@ -23,6 +23,6 @@ export const GET_POKEMON_ABILITIES = gql(`
     pokemon_v2_ability {
       name
       id
-      }
     }
+  }
 `);

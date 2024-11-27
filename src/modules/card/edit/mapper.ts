@@ -1,9 +1,14 @@
 import { GetPokemonByIdQuery } from '../../../api/__generated__/graphql.ts';
 import { Options } from 'react-select';
 
+type Option = {
+  label: string;
+  value: number;
+};
+
 export const mapPokemonAbilitiesToFront = (
   data: GetPokemonByIdQuery | undefined,
-): Options<{ label: string; value: number }> | [] => {
+): Options<Option> | [] => {
   return (
     data?.pokemon_v2_pokemon[0].pokemon_v2_pokemonabilities?.map((item) => {
       return {
@@ -15,7 +20,7 @@ export const mapPokemonAbilitiesToFront = (
 };
 
 export const mapPokemonAbilitiesToBack = (
-  data: { value: string; label: string }[] | undefined,
+  data: Option[] | undefined,
 ):
   | { pokemon_v2_ability: { __typename: string; name: string; id: number } }[]
   | [] => {
@@ -24,7 +29,7 @@ export const mapPokemonAbilitiesToBack = (
       return {
         pokemon_v2_ability: {
           name: item.label,
-          id: +item.value,
+          id: item.value,
           __typename: 'pokemon_v2_ability',
         },
       };
