@@ -2,8 +2,9 @@ import { PAGINATION_DEFAULT } from '../../../utils/consts.ts';
 import styles from './Pagination.module.scss';
 import ArrowRight from '../../Icons/ArrowRight.tsx';
 import ArrowLeft from '../../Icons/ArrowLeft.tsx';
-import { useLocation, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import Select from 'react-select';
+import { usePagination } from '../../../utils/usePagination.ts';
 
 type PaginationProps = {
   totalCount: number | undefined;
@@ -11,12 +12,8 @@ type PaginationProps = {
 };
 
 const Pagination = ({ totalCount, onUpdatePagination }: PaginationProps) => {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const location = useLocation();
-  const currentPage =
-    +searchParams.get('page') || parseInt(location.state?.page);
-  const currentPageSize =
-    +searchParams.get('pageSize') || parseInt(location.state?.pageSize);
+  const [, setSearchParams] = useSearchParams();
+  const { currentPage, currentPageSize } = usePagination();
   const totalPages =
     Math.ceil(totalCount / currentPageSize) || PAGINATION_DEFAULT.TOTAL_PAGES;
 

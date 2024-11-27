@@ -1,9 +1,9 @@
 import CardPageWrapper from '../components/CardPageWrapper/CardPageWrapper.tsx';
 import CardViewButtons from './CardViewButtons.tsx';
 import CardViewFields from './CardViewFields.tsx';
-import { useLocation, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { GetPokemonByIdQuery } from '../../../api/__generated__/graphql.ts';
-import { PAGINATION_DEFAULT } from '../../../utils/consts.ts';
+import { usePagination } from '../../../utils/usePagination.ts';
 
 type CardViewPageProps = {
   loading: boolean;
@@ -12,10 +12,7 @@ type CardViewPageProps = {
 
 const CardViewPage = ({ data, loading }: CardViewPageProps) => {
   const { cardId } = useParams();
-  const location = useLocation();
-  const currentPage = parseInt(location.state?.page) || PAGINATION_DEFAULT.PAGE;
-  const currentPageSize =
-    parseInt(location.state?.pageSize) || PAGINATION_DEFAULT.PAGE_SIZE;
+  const { currentPage, currentPageSize } = usePagination();
 
   return (
     <CardPageWrapper

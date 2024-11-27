@@ -10,15 +10,13 @@ import Loader from '../../components/Loader/Loader.tsx';
 import styles from './CatalogPage.module.scss';
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { usePagination } from '../../utils/usePagination.ts';
 
 const CatalogPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigator = useNavigate();
   const location = useLocation();
-  const currentPage =
-    +searchParams.get('page') || parseInt(location.state?.page);
-  const currentPageSize =
-    +searchParams.get('pageSize') || parseInt(location.state?.pageSize);
+  const { currentPage, currentPageSize } = usePagination();
 
   useEffect(() => {
     if (!currentPage || !currentPageSize) {
