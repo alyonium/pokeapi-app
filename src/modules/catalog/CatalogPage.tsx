@@ -3,8 +3,7 @@ import { GET_POKEMONS } from '../../api/queries/pokemonTable.ts';
 import { GetPokemonsQuery } from '../../api/__generated__/graphql.ts';
 import BaseTable from '../../components/BaseTable/BaseTable.tsx';
 import { TABLE_HEAD } from './consts.ts';
-import { PAGINATION_DEFAULT } from '../../utils/consts.ts';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Header from '../../components/Header/Header.tsx';
 import Loader from '../../components/Loader/Loader.tsx';
 import styles from './CatalogPage.module.scss';
@@ -13,24 +12,9 @@ import { useSearchParams } from 'react-router-dom';
 import { usePagination } from '../../utils/usePagination.ts';
 
 const CatalogPage = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
   const navigator = useNavigate();
-  const location = useLocation();
   const { currentPage, currentPageSize } = usePagination();
-
-  useEffect(() => {
-    if (!currentPage || !currentPageSize) {
-      setSearchParams({
-        page: `${PAGINATION_DEFAULT.PAGE}`,
-        pageSize: `${PAGINATION_DEFAULT.PAGE_SIZE}`,
-      });
-    } else {
-      setSearchParams({
-        page: searchParams.get('page') || location.state?.page,
-        pageSize: searchParams.get('pageSize') || location.state?.pageSize,
-      });
-    }
-  }, [currentPage, currentPageSize, setSearchParams]);
+  useSearchParams();
 
   const [updatedData, setUpdatedData] = useState<
     GetPokemonsQuery | undefined
