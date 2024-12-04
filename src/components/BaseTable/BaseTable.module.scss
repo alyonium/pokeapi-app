@@ -1,7 +1,7 @@
 .wrapper {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   width: 100%;
 }
@@ -12,6 +12,10 @@ th, td {
 
 thead th {
   font-family: var(--header-font-family);
+}
+
+tbody {
+  overflow: scroll;
 }
 
 tbody tr {
@@ -26,7 +30,7 @@ tbody tr {
 
 table {
   padding: var(--gap-md);
-  height: 474px;
+  max-height: 474px;
   backdrop-filter: blur(var(--backdrop-filter));
   margin-bottom: var(--gap-lg);
   border-spacing: 0;

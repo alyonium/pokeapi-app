@@ -5,6 +5,7 @@ import ArrowLeft from '../../Icons/ArrowLeft.tsx';
 import { useSearchParams } from 'react-router-dom';
 import Select from 'react-select';
 import { usePagination } from '../../../utils/usePagination.ts';
+import { pageSizeOptions } from './consts.ts';
 
 type PaginationProps = {
   totalCount: number | undefined;
@@ -38,16 +39,7 @@ const Pagination = ({ totalCount, onUpdatePagination }: PaginationProps) => {
       onChange={(value) =>
         updatePagination(PAGINATION_DEFAULT.PAGE, value.value)
       }
-      options={[
-        {
-          value: PAGINATION_DEFAULT.PAGE_SIZE,
-          label: PAGINATION_DEFAULT.PAGE_SIZE,
-        },
-        {
-          value: 5,
-          label: 5,
-        },
-      ]}
+      options={pageSizeOptions}
       defaultValue={{
         value: currentPageSize,
         label: currentPageSize,

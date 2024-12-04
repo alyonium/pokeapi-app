@@ -4,7 +4,7 @@ import CardEditFields from './CardEditFields.tsx';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useState } from 'react';
 import { GetPokemonByIdQuery } from '../../../api/__generated__/graphql.ts';
-import { BUTTON_MODE } from '../../../utils/consts.ts';
+import { BUTTON_MODE, POKEMON_V2_POKEMON } from '../../../utils/consts.ts';
 import { useMutation } from '@apollo/client';
 import { UPDATE_POKEMON_LOCAL } from '../../../api/mutations/pokemonPage.ts';
 import { FIELDS } from '../consts.ts';
@@ -12,6 +12,7 @@ import BaseModal from '../../../components/BaseModal/BaseModal.tsx';
 import styles from '../components/CardPageWrapper/CardPageWrapper.module.scss';
 import Button from '../../../components/Button/Button.tsx';
 import { usePagination } from '../../../utils/usePagination.ts';
+import { ROUTE } from '../../../router/consts.ts';
 
 type CardEditPageProps = {
   loading: boolean;
@@ -25,12 +26,12 @@ const CardEditPage = ({ data, loading }: CardEditPageProps) => {
   const [isModalWindowOpen, setIsModalWindow] = useState<boolean>(false);
   const [nonValidFields, setNonValidFields] = useState<string[]>([]);
   const [editedFields, setEditedFields] =
-    useState<Partial<GetPokemonByIdQuery['pokemon_v2_pokemon'][0]>>();
+    useState<Partial<GetPokemonByIdQuery[POKEMON_V2_POKEMON][0]>>();
   const [updatePokemonLocal] = useMutation(UPDATE_POKEMON_LOCAL);
   const { currentPage, currentPageSize } = usePagination();
 
   const navigateToCardViewMode = () => {
-    navigator(`/card/view/${cardId}`, {
+    navigator(`${ROUTE.CARD_VIEW}/${cardId}`, {
       state: {
         page: currentPage,
         pageSize: currentPageSize,
@@ -76,11 +77,11 @@ const CardEditPage = ({ data, loading }: CardEditPageProps) => {
     });
 
     const pokemon = JSON.parse(
-      localStorage.getItem(`pokemon_v2_pokemon:${cardId}`),
+      localStorage.getItem(`${POKEMON_V2_POKEMON}:${cardId}`),
     );
 
     localStorage.setItem(
-      `pokemon_v2_pokemon:${cardId}`,
+      `${POKEMON_V2_POKEMON}:${cardId}`,
       JSON.stringify({ ...pokemon, id: +cardId, ...editedFields }),
     );
 

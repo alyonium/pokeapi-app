@@ -2,6 +2,7 @@ import Button from '../../../components/Button/Button.tsx';
 import { useNavigate } from 'react-router-dom';
 import styles from '../components/CardPageWrapper/CardPageWrapper.module.scss';
 import { BUTTON_MODE } from '../../../utils/consts.ts';
+import { ROUTE } from '../../../router/consts.ts';
 
 type CardEditButtonsType = {
   currentPage: number;
@@ -26,7 +27,7 @@ const CardEditButtons = ({
         state={isFormLocked ? BUTTON_MODE.DISABLED : BUTTON_MODE.DEFAULT}
         text="Back to catalog"
         onClick={() =>
-          navigator(`/catalog`, {
+          navigator(ROUTE.CATALOG, {
             state: {
               page: currentPage,
               pageSize: currentPageSize,

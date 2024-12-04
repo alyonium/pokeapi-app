@@ -20,3 +20,7 @@ export const FIELDS = {
     type: 'number',
   },
 };
+
+export const DEFAULT_DATA = {
+  pokemon_v2_pokemon: [],
+};

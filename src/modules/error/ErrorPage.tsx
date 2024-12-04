@@ -3,6 +3,7 @@ import Button from '../../components/Button/Button.tsx';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../components/Header/Header.tsx';
 import { PAGINATION_DEFAULT } from '../../utils/consts.ts';
+import { ROUTE } from '../../router/consts.ts';
 
 const ErrorPage = () => {
   const navigator = useNavigate();
@@ -14,7 +15,7 @@ const ErrorPage = () => {
         <Button
           text="Back to catalog"
           onClick={() =>
-            navigator(`/catalog`, {
+            navigator(ROUTE.CATALOG, {
               state: {
                 page: PAGINATION_DEFAULT.PAGE,
                 pageSize: PAGINATION_DEFAULT.PAGE_SIZE,

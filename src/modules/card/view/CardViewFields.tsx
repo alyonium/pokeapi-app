@@ -3,6 +3,7 @@ import { GetPokemonByIdQuery } from '../../../api/__generated__/graphql.ts';
 import { IMAGE_URL } from '../../../utils/consts.ts';
 import { useNavigate } from 'react-router-dom';
 import { FIELDS } from '../consts.ts';
+import { ROUTE } from '../../../router/consts.ts';
 
 type CardViewFieldsProps = {
   data: GetPokemonByIdQuery | undefined;
@@ -12,7 +13,7 @@ const CardViewFields = ({ data }: CardViewFieldsProps) => {
   const navigator = useNavigate();
 
   if (!data) {
-    navigator('/error');
+    navigator(ROUTE.ERROR);
   }
 
   return (

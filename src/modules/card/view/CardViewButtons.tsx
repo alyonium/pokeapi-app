@@ -1,5 +1,6 @@
 import Button from '../../../components/Button/Button.tsx';
 import { useNavigate } from 'react-router-dom';
+import { ROUTE } from '../../../router/consts.ts';
 
 type CardViewButtonsType = {
   currentPage: number;
@@ -19,7 +20,7 @@ const CardViewButtons = ({
       <Button
         text="Back to catalog"
         onClick={() =>
-          navigator(`/catalog`, {
+          navigator(ROUTE.CATALOG, {
             state: {
               page: currentPage,
               pageSize: currentPageSize,
@@ -30,7 +31,7 @@ const CardViewButtons = ({
       <Button
         text="Edit"
         onClick={() =>
-          navigator(`/card/edit/${cardId}`, {
+          navigator(`${ROUTE.CARD_EDIT}/${cardId}`, {
             state: {
               page: currentPage,
               pageSize: currentPageSize,

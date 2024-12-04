@@ -2,39 +2,22 @@ import { useQuery } from '@apollo/client';
 import { GET_POKEMONS } from '../../api/queries/pokemonTable.ts';
 import { GetPokemonsQuery } from '../../api/__generated__/graphql.ts';
 import BaseTable from '../../components/BaseTable/BaseTable.tsx';
-import { TABLE_HEAD } from './consts.ts';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { DEFAULT_DATA, TABLE_HEAD, TableColumnKeys } from './consts.ts';
+import { useNavigate } from 'react-router-dom';
 import Header from '../../components/Header/Header.tsx';
 import Loader from '../../components/Loader/Loader.tsx';
 import styles from './CatalogPage.module.scss';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { usePagination } from '../../utils/usePagination.ts';
-import { PAGINATION_DEFAULT } from '../../utils/consts.ts';
+import { POKEMON_V2_POKEMON } from '../../utils/consts.ts';
+import { ROUTE } from '../../router/consts.ts';
+import { getCurrentPaginationOptions } from './utils.ts';
 
 const CatalogPage = () => {
   const navigator = useNavigate();
   const { currentPage, currentPageSize } = usePagination();
-  const [searchParams, setSearchParams] = useSearchParams();
-  const location = useLocation();
-
-  useEffect(() => {
-    if (!currentPage || !currentPageSize) {
-      setSearchParams({
-        page: `${PAGINATION_DEFAULT.PAGE}`,
-        pageSize: `${PAGINATION_DEFAULT.PAGE_SIZE}`,
-      });
-    } else {
-      setSearchParams({
-        page: searchParams.get('page') || location.state?.page,
-        pageSize: searchParams.get('pageSize') || location.state?.pageSize,
-      });
-    }
-  }, [currentPage, currentPageSize, setSearchParams]);
-
-  const [updatedData, setUpdatedData] = useState<
-    GetPokemonsQuery | undefined
-  >();
+  const [, setSearchParams] = useSearchParams();
 
   const { loading, error, data, refetch } = useQuery<GetPokemonsQuery>(
     GET_POKEMONS,
@@ -46,17 +29,16 @@ const CatalogPage = () => {
     },
   );
 
-  const updateTable = (currentPage, currentPageSize) => {
-    refetch({
-      limit: currentPageSize,
-      offset: (currentPage - 1) * currentPageSize,
-    });
-  };
+  const newData = useMemo(() => {
+    if (!data) {
+      return DEFAULT_DATA;
+    }
 
-  useEffect(() => {
     const updatedFromLocalStorageData = data?.pokemon_v2_pokemon?.map(
       (item) => {
-        const pokemon = localStorage.getItem(`pokemon_v2_pokemon:${item.id}`);
+        const pokemon = localStorage.getItem(
+          `${POKEMON_V2_POKEMON}:${item.id}`,
+        );
         if (pokemon) {
           const editedPokemonFields = JSON.parse(pokemon);
           return { ...item, ...editedPokemonFields };
@@ -67,15 +49,40 @@ const CatalogPage = () => {
     );
 
     if (updatedFromLocalStorageData) {
-      setUpdatedData({
+      return {
         pokemon_v2_pokemon: [...updatedFromLocalStorageData],
         pokemon_v2_pokemon_aggregate: data?.pokemon_v2_pokemon_aggregate,
-      } as GetPokemonsQuery);
+      };
+    } else {
+      return data;
     }
   }, [data]);
 
+  useEffect(() => {
+    if (!loading) {
+      const totalPages = Math.ceil(
+        newData.pokemon_v2_pokemon_aggregate.aggregate.count / currentPageSize,
+      );
+
+      const currentPaginationOptions = getCurrentPaginationOptions({
+        currentPage,
+        currentPageSize,
+        totalPages,
+      });
+
+      setSearchParams(currentPaginationOptions);
+    }
+  }, [currentPage, currentPageSize, newData]);
+
+  const updateTable = (currentPage, currentPageSize) => {
+    refetch({
+      limit: currentPageSize,
+      offset: (currentPage - 1) * currentPageSize,
+    });
+  };
+
   const onSelectRow = (rowId: number) => {
-    navigator(`/card/view/${rowId}`, {
+    navigator(`${ROUTE.CARD_VIEW}/${rowId}`, {
       state: {
         page: currentPage,
         pageSize: currentPageSize,
@@ -84,7 +91,7 @@ const CatalogPage = () => {
   };
 
   if (error) {
-    navigator('/error');
+    navigator(ROUTE.ERROR);
   }
 
   return (
@@ -94,9 +101,12 @@ const CatalogPage = () => {
         {loading ? (
           <Loader />
         ) : (
-          <BaseTable
+          <BaseTable<
+            GetPokemonsQuery[POKEMON_V2_POKEMON][number],
+            TableColumnKeys
+          >
             cols={TABLE_HEAD}
-            rows={updatedData?.pokemon_v2_pokemon as Array<GetPokemonsQuery>}
+            rows={newData.pokemon_v2_pokemon as Array<GetPokemonsQuery>}
             totalCount={data?.pokemon_v2_pokemon_aggregate.aggregate?.count}
             onUpdatePagination={updateTable}
             onSelectRow={(rowId: number) => onSelectRow(rowId)}

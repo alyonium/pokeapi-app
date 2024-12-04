@@ -12,7 +12,7 @@ const Button = ({
   onClick,
   state = BUTTON_MODE.DEFAULT,
 }: ButtonProps) => {
-  const returnClassNamesByState = () => {
+  const getClassNamesByState = () => {
     switch (state) {
       case BUTTON_MODE.DISABLED:
         return styles.disabled;
@@ -25,7 +25,7 @@ const Button = ({
     }
   };
 
-  const returnOnClickByState = () => {
+  const getOnClickByState = () => {
     if (state !== BUTTON_MODE.DISABLED) {
       return onClick();
     }
@@ -33,8 +33,8 @@ const Button = ({
 
   return (
     <div
-      className={`${styles.button} ${returnClassNamesByState()}`}
-      onClick={returnOnClickByState}
+      className={`${styles.button} ${getClassNamesByState()}`}
+      onClick={getOnClickByState}
     >
       <span>{text}</span>
     </div>

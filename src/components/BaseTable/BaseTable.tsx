@@ -1,4 +1,4 @@
-import { Column } from '../../types/table';
+import { Column } from './table';
 import Pagination from './Pagination/Pagination.tsx';
 import styles from './BaseTable.module.css';
 
@@ -38,10 +38,7 @@ const BaseTable = <T, K extends keyof T>({
               <tr key={index} onClick={() => onSelectRow(row.id)}>
                 {cols.map((col, index) => {
                   return (
-                    <td
-                      key={`${col.field}${index}}`}
-                      style={{ width: col.width }}
-                    >
+                    <td key={index} style={{ width: col.width }}>
                       {row[col.field]}
                     </td>
                   );
