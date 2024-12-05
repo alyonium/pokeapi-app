@@ -7,17 +7,19 @@ import { useNavigate } from 'react-router-dom';
 import Header from '../../components/Header/Header.tsx';
 import Loader from '../../components/Loader/Loader.tsx';
 import styles from './CatalogPage.module.scss';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { usePagination } from '../../utils/usePagination.ts';
-import { POKEMON_V2_POKEMON } from '../../utils/consts.ts';
+import { PAGINATION_DEFAULT, POKEMON_V2_POKEMON } from '../../utils/consts.ts';
 import { ROUTE } from '../../router/consts.ts';
 import { getCurrentPaginationOptions } from './utils.ts';
+import DebounceInput from '../../components/DebounceInput/DebounceInput.tsx';
 
 const CatalogPage = () => {
   const navigator = useNavigate();
   const { currentPage, currentPageSize } = usePagination();
   const [, setSearchParams] = useSearchParams();
+  const [debounceInputValue, setDebounceInputValue] = useState<string>('');
 
   const { loading, error, data, refetch } = useQuery<GetPokemonsQuery>(
     GET_POKEMONS,
@@ -25,6 +27,7 @@ const CatalogPage = () => {
       variables: {
         limit: currentPageSize,
         offset: (currentPage - 1) * currentPageSize,
+        name: `${debounceInputValue}%`,
       },
     },
   );
@@ -78,6 +81,7 @@ const CatalogPage = () => {
     refetch({
       limit: currentPageSize,
       offset: (currentPage - 1) * currentPageSize,
+      name: `${debounceInputValue}%`,
     });
   };
 
@@ -90,6 +94,15 @@ const CatalogPage = () => {
     });
   };
 
+  const onSearch = (searchValue: string) => {
+    setDebounceInputValue(searchValue);
+    setSearchParams({
+      page: `${PAGINATION_DEFAULT.PAGE}`,
+      pageSize: `${PAGINATION_DEFAULT.PAGE_SIZE}`,
+    });
+    updateTable(PAGINATION_DEFAULT.PAGE, PAGINATION_DEFAULT.PAGE_SIZE);
+  };
+
   if (error) {
     navigator(ROUTE.ERROR);
   }
@@ -98,6 +111,8 @@ const CatalogPage = () => {
     <>
       <Header />
       <div className={styles.contentWrapper}>
+        <DebounceInput getDebouncedValue={onSearch} />
+
         {loading ? (
           <Loader />
         ) : (

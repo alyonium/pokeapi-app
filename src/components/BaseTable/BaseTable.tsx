@@ -19,40 +19,46 @@ const BaseTable = <T, K extends keyof T>({
 }: BaseTableProps<T, K>) => {
   return (
     <>
-      <table className={styles.wrapper}>
-        <thead>
-          <tr>
-            {cols.map((col) => {
-              return (
-                <th key={col.field} style={{ width: col.width }}>
-                  {col.headerName}
-                </th>
-              );
-            })}
-          </tr>
-        </thead>
-
-        <tbody>
-          {rows?.map((row, index) => {
-            return (
-              <tr key={index} onClick={() => onSelectRow(row.id)}>
-                {cols.map((col, index) => {
+      {rows?.length === 0 ? (
+        <span className={styles.noData}>No data</span>
+      ) : (
+        <>
+          <table className={styles.wrapper}>
+            <thead>
+              <tr>
+                {cols.map((col) => {
                   return (
-                    <td key={index} style={{ width: col.width }}>
-                      {row[col.field]}
-                    </td>
+                    <th key={col.field} style={{ width: col.width }}>
+                      {col.headerName}
+                    </th>
                   );
                 })}
               </tr>
-            );
-          })}
-        </tbody>
-      </table>
+            </thead>
 
-      <Pagination
-        totalCount={totalCount}
-        onUpdatePagination={onUpdatePagination}
-      />
+            <tbody>
+              {rows?.map((row, index) => {
+                return (
+                  <tr key={index} onClick={() => onSelectRow(row.id)}>
+                    {cols.map((col, index) => {
+                      return (
+                        <td key={index} style={{ width: col.width }}>
+                          {row[col.field]}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+
+          <Pagination
+            totalCount={totalCount}
+            onUpdatePagination={onUpdatePagination}
+          />
+        </>
+      )}
     </>
   );
 };

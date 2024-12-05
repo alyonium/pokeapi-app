@@ -47,6 +47,34 @@ const Pagination = ({ totalCount, onUpdatePagination }: PaginationProps) => {
     />
   );
 
+  const paginationBlock = () => {
+    const a = [];
+    for (let i = 1; i <= totalPages; i++) {
+      a.push(
+        <div
+          className={currentPage === i ? styles.currentPage : ''}
+          onClick={() => updatePagination(i, currentPageSize)}
+        >
+          {i}
+        </div>,
+      );
+    }
+    return a;
+  };
+  if (totalPages < 6) {
+    return (
+      <div className={styles.wrapper}>
+        <div className={styles.totalWrapper}>
+          {totalBlock}
+
+          {pageSizeBlock}
+        </div>
+
+        <div className={styles.countsWrapper}>{paginationBlock()}</div>
+      </div>
+    );
+  }
+
   if (currentPage === 1 || currentPage === 2) {
     return (
       <div className={styles.wrapper}>

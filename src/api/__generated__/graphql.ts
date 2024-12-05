@@ -58811,6 +58811,7 @@ export type GetPokemonAbilitiesQuery = {
 export type GetPokemonsQueryVariables = Exact<{
     limit: Scalars['Int']['input'];
     offset: Scalars['Int']['input'];
+    name: Scalars['String']['input'];
 }>;
 
 
@@ -58839,7 +58840,7 @@ export type PokemonFieldsFragment = {
     base_experience?: number | null,
     pokemon_v2_pokemonabilities: Array<{
         __typename?: 'pokemon_v2_pokemonability',
-        pokemon_v2_ability?: { __typename?: 'pokemon_v2_ability', name: string } | null
+        pokemon_v2_ability?: { __typename?: 'pokemon_v2_ability', id: number, name: string } | null
     }>
 };
 
@@ -58852,6 +58853,7 @@ export const PokemonFieldsFragmentDoc = gql`
   base_experience
   pokemon_v2_pokemonabilities {
     pokemon_v2_ability {
+      id
       name
     }
   }
@@ -58957,15 +58959,20 @@ export type GetPokemonAbilitiesLazyQueryHookResult = ReturnType<typeof useGetPok
 export type GetPokemonAbilitiesSuspenseQueryHookResult = ReturnType<typeof useGetPokemonAbilitiesSuspenseQuery>;
 export type GetPokemonAbilitiesQueryResult = Apollo.QueryResult<GetPokemonAbilitiesQuery, GetPokemonAbilitiesQueryVariables>;
 export const GetPokemonsDocument = gql`
-    query GetPokemons($limit: Int!, $offset: Int!) {
-  pokemon_v2_pokemon(limit: $limit, offset: $offset, order_by: {name: asc}) {
+    query GetPokemons($limit: Int!, $offset: Int!, $name: String!) {
+  pokemon_v2_pokemon(
+    limit: $limit
+    offset: $offset
+    where: {name: {_ilike: $name}}
+    order_by: {name: asc}
+  ) {
     id
     height
     name
     weight
     base_experience
   }
-  pokemon_v2_pokemon_aggregate {
+  pokemon_v2_pokemon_aggregate(where: {name: {_ilike: $name}}) {
     aggregate {
       count
     }
@@ -58987,6 +58994,7 @@ export const GetPokemonsDocument = gql`
  *   variables: {
  *      limit: // value for 'limit'
  *      offset: // value for 'offset'
+ *      name: // value for 'name'
  *   },
  * });
  */
