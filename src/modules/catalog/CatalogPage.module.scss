@@ -1,8 +1,14 @@
 .contentWrapper {
   display: flex;
-  min-height: 400px;
-  justify-content: center;
+  min-height: 580px;
+  justify-content: flex-start;
   align-items: center;
   flex-direction: column;
   gap: var(--gap-sm);
+}
+
+.loaderWrapper {
+  height: 500px;
+  display: flex;
+  align-items: center;
 }

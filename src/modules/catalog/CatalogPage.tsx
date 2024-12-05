@@ -98,9 +98,9 @@ const CatalogPage = () => {
     setDebounceInputValue(searchValue);
     setSearchParams({
       page: `${PAGINATION_DEFAULT.PAGE}`,
-      pageSize: `${PAGINATION_DEFAULT.PAGE_SIZE}`,
+      pageSize: `${currentPageSize}`,
     });
-    updateTable(PAGINATION_DEFAULT.PAGE, PAGINATION_DEFAULT.PAGE_SIZE);
+    updateTable(PAGINATION_DEFAULT.PAGE, currentPageSize);
   };
 
   if (error) {
@@ -114,7 +114,9 @@ const CatalogPage = () => {
         <DebounceInput getDebouncedValue={onSearch} />
 
         {loading ? (
-          <Loader />
+          <div className={styles.loaderWrapper}>
+            <Loader />
+          </div>
         ) : (
           <BaseTable<
             GetPokemonsQuery[POKEMON_V2_POKEMON][number],

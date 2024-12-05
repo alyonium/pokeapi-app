@@ -13,5 +13,12 @@ export const usePagination = () => {
     parseInt(location.state?.pageSize) ||
     PAGINATION_DEFAULT.PAGE_SIZE;
 
+  if (currentPage < 1 || currentPageSize < 1) {
+    return {
+      currentPage: PAGINATION_DEFAULT.PAGE,
+      currentPageSize: PAGINATION_DEFAULT.PAGE_SIZE,
+    };
+  }
+
   return { currentPage, currentPageSize };
 };
